@@ -16,10 +16,11 @@ const[post, setPosts]= useState([
 
   return (
     <div className="App">
+    <h1 style={{textAlign: 'center'}}>Список постов</h1>
+    {post.map(post=>
+      <PostItem post = {post} key = {post.id}/>
+      )}
     
-    {postMessage.map(post=>
-      <div>Post</div>
-      )} 
 
     </div>
   );
@@ -32,8 +33,8 @@ export default App;
 
 
 
-// {postMessage.map(post=>
-//   <div>Post</div>
+// {posts.map(post=>
+//   <PostItem post = {post} key={post.id}/> для каждого поста в массиве отрисовываю пост айтем и как пропс передаю туда объект теперь у каждого своё название свой айдишник.всегда ключ указывать должен быть уникальным позволяет эффективно делать рендеринг там где произошло изменение
 //   )}  обращаюсь к списков постов вызываю map в неё передаю колбэк где каждый элемент переобразовываю в jsx
 
 
