@@ -1,0 +1,17 @@
+/* обнуляющие стили */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /*определяется как вычисляется общая ширина и высота элемента.*/
+}
+
+#root {
+display: flex;
+justify-content: center; 
+}
+
+
+.App{
+    width: 800px;
+}
