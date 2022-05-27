@@ -1,0 +1,9 @@
+.myBtn{
+    padding: 5px 15px;
+    color: rgb(127, 129, 255);
+    font-size: 14px;
+    background: transparent; /*цвет заднего фона прозрачный */
+border: 1px solid rgb(140, 60, 7);
+cursor: pointer;
+
+}

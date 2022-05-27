@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Counter from './components/Counter'
 import PostItem from "./components/PostItem";
+import PostList from "./components/PostList";
 import './Styles/App.css';
+import MyButton from "./components/UI/button/MyButton";
 
 
 function App() {
 // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
-const[post, setPosts]= useState([
+const[posts, setPosts]= useState([
   {id:1, title:'Javascript',body:'description'},
 {id:2, title:'Javascript 2',body:'description'},
 {id:3, title:'Javascript 3',body:'description'},
@@ -14,14 +16,16 @@ const[post, setPosts]= useState([
 ])
 
 
+
+
   return (
     <div className="App">
-    <h1 style={{textAlign: 'center'}}>Список постов</h1>
-    {post.map(post=>
-      <PostItem post = {post} key = {post.id}/>
-      )}
-    
-
+    <form>
+    <input type = 'text' placeholder='Название поста'/>
+    <input type = 'text' placeholder = 'Описание поста'/>
+    <MyButton>Создать кнопку</MyButton>
+    </form>
+   <PostList posts={posts} title='Посты про JS'/> 
     </div>
   );
 }
@@ -32,6 +36,22 @@ export default App;
 
 
 
+
+
+
+
+
+/*const [posts2, setPosts2]= useState([
+  {id: 1, title: 'Phyton', body: 'Descreption'},
+  {id: 2, title: 'Python 2', body: 'Description'},
+  {id:3, title: 'Python 3', body: 'Description'},
+])
+/*<PostList posts={posts2} title= 'Посты про Python'/>*/
+
+
+
+
+//<PostList posts={posts} title='Список постов 1'/>  передала данные для пропс
 
 // {posts.map(post=>
 //   <PostItem post = {post} key={post.id}/> для каждого поста в массиве отрисовываю пост айтем и как пропс передаю туда объект теперь у каждого своё название свой айдишник.всегда ключ указывать должен быть уникальным позволяет эффективно делать рендеринг там где произошло изменение
