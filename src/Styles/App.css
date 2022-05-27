@@ -1,17 +1,26 @@
 /* обнуляющие стили */
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box; /*определяется как вычисляется общая ширина и высота элемента.*/
 }
 
 #root {
-display: flex;
-justify-content: center; 
+    display: flex;
+    justify-content: center;
 }
 
-
-.App{
+.App {
     width: 800px;
+}
+
+.post {
+    display: flex;
+    padding: 15px; /* внутренние отступы */
+    border: 2px solid tan; /* рамка 2px толщина спошная и цвет*/
+    margin-top: 15px; /* внешний отступ сверху*/
+    justify-content: space-between; /*определяет, как браузер распределяет пространство между и вокруг элементов контента вдоль главной оси flex контейнера*/ /*Равномерно распределяет все элементы по ширине flex-блока.
+    Первый элемент вначале, последний в конце */
+    align-items: center;
 }

@@ -1,23 +1,25 @@
 import { useState } from "react";
 import Counter from './components/Counter'
+import PostItem from "./components/PostItem";
 import './Styles/App.css';
 
 
 function App() {
-  const [value, setValue] = useState("текст в инпуте"); // будем его менять в инпуте
+// если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
+const[post, setPosts]= useState([
+  {id:1, title:'Javascript',body:'description'},
+{id:2, title:'Javascript 2',body:'description'},
+{id:3, title:'Javascript 3',body:'description'},
+
+])
+
+
   return (
     <div className="App">
-    <div className="post">
-    <div className="post_content">
-    <strong>1. JavaScript</strong>
-    <div>
-    JavaScript - язык программирования
-    </div>
-    </div>
-    < div className="post_btns">
-    <button>Удалить</button>
-    </div>
-    </div>
+    
+    {postMessage.map(post=>
+      <div>Post</div>
+      )} 
 
     </div>
   );
@@ -30,8 +32,15 @@ export default App;
 
 
 
+// {postMessage.map(post=>
+//   <div>Post</div>
+//   )}  обращаюсь к списков постов вызываю map в неё передаю колбэк где каждый элемент переобразовываю в jsx
 
 
+
+
+ // передала значие для пропс в компоненте этой смотри как выглядит props.post.id и дальше
+//  <PostItem post={{id:1, title:'Javascript',body:'description'}}/> 
 
 
 
