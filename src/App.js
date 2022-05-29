@@ -4,7 +4,7 @@ import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
 import './Styles/App.css';
 import MyButton from "./components/UI/button/MyButton";
-
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
 // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -21,9 +21,9 @@ const[posts, setPosts]= useState([
   return (
     <div className="App">
     <form>
-    <input type = 'text' placeholder='Название поста'/>
-    <input type = 'text' placeholder = 'Описание поста'/>
-    <MyButton>Создать кнопку</MyButton>
+    <MyInput type = 'text' placeholder='Название поста'/>
+    <MyInput type = 'text' placeholder = 'Описание поста'/>
+    <MyButton disabled>Создать кнопку</MyButton>
     </form>
    <PostList posts={posts} title='Посты про JS'/> 
     </div>
