@@ -28,9 +28,20 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
   return (
     <div className="App">
   <PostForm create ={createPost}/> {/*props create */}
-   {posts.length !==0 
+  <hr style={{margin: '15px 0'}}/>
+  <div> 
+   <select>
+   <option value='value'>'По названию</option>
+   <option value='value'>'По описанию'</option>
+   </select>
+   </div>
+
+  
+  {posts.length !==0 
  ?  <PostList remove={removePost} posts={posts} title='Посты про JS'/> 
- : <h1 style={{textAlign:'center'}}>Посты не найдены!</h1>
+ : <h1 style={{textAlign:'center'}}>
+ Посты не найдены!
+ </h1>
   }
   </div>
   );
