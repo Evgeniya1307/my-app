@@ -16,8 +16,10 @@ const[posts, setPosts]= useState([
 
 ])
 
-const [title, setTitle] = useState('')
-const [body, setBody]= useState('') // для очищения инпута после создания поста
+const [post, setPost]= useState({title:'', body:''})// когда много постов объектов
+
+//const [title, setTitle] = useState('')
+//const [body, setBody]= useState('') // для очищения инпута после создания поста
 
 
 const addNewPost=(e)=>{
@@ -28,6 +30,8 @@ const addNewPost=(e)=>{
     body
   }
 setPosts([...posts,newPost])// добавить созданный объект в массив постов [...posts,newPost] добавляем старый массив и в конец новый 
+setPost('')// обнуляем состояние всеё формы
+
 }
 
 
@@ -36,14 +40,17 @@ setPosts([...posts,newPost])// добавить созданный объект 
     <form>
     {/*управляемый компонент */}
     <MyInput
-    value={body} //двухсторонее связывание value input с состоянием body
-    onChange = {e=>setBody(e.target.value)}//отлеживать когда пользователь что то вводит
+    value={post.title} //двухсторонее связывание value input с состоянием body
+    onChange = {e=>setPost({...post, title:e.target.value})}//вызвала функцию SetPost передала объект в нём старый пост ...post и перезатираю нужное поле конкретное в этом инпуте    
     type = 'text' 
     placeholder='Название поста'
     />
     
     <MyInput 
-    type = 'text' placeholder = 'Описание поста'/>
+    value={post.body}
+    onChange = {e=>setPost({...post,body:e.target.value})}
+    type = 'text' 
+    placeholder = 'Описание поста'/>
     <MyButton onClick={addNewPost}>Создать пост </MyButton> 
     </form>
    <PostList posts={posts} title='Посты про JS'/> 
@@ -84,3 +91,8 @@ export default App;
 
 
 //e.preventDefault()// предотвращает дэфолтное поведение браузера страница не обновлчяется
+
+
+
+
+//onChange = {e=>setTitle(e.target.value)}//отлеживать когда пользователь что то вводит
