@@ -17,12 +17,18 @@ const[posts, setPosts]= useState([
 ])
 
 const [title, setTitle] = useState('')
-const [body, setBody]= useState() // для очищения инпута после создания поста
+const [body, setBody]= useState('') // для очищения инпута после создания поста
 
 
 const addNewPost=(e)=>{
-  e.preventDefault()// предотвращает дэфолтное поведение браузера страница не обновлчяется
-console.log(title)
+  e.preventDefault()
+  const newPost = {
+    id:Date.now(),// получим айдишник из текущей даты
+    title,
+    body
+  }
+  console.log(newPost)
+}
 
 
   return (
@@ -30,8 +36,8 @@ console.log(title)
     <form>
     {/*управляемый компонент */}
     <MyInput
-    value={title} //двухсторонее связывание value input с состоянием title
-    onChange = {e=>setTitle(e.target.value)}//отлеживать когда пользователь что то вводит
+    value={body} //двухсторонее связывание value input с состоянием body
+    onChange = {e=>setBody(e.target.value)}//отлеживать когда пользователь что то вводит
     type = 'text' 
     placeholder='Название поста'
     />
@@ -52,7 +58,7 @@ export default App;
 
 
 
-{/*неуправляемый */}
+//неуправляемый 
 // <MyInput 
 // ref={bodyInputRef}
 // type = 'text' placeholder = 'Описание поста'/>
@@ -62,3 +68,19 @@ export default App;
 // </div>
 // );
 // } 
+
+
+
+
+// <MyInput 
+// type = 'text' placeholder = 'Описание поста'/>
+// <MyButton onClick={addNewPost}>Создать пост </MyButton> 
+// </form>
+// <PostList posts={posts} title='Посты про JS'/> 
+// </div>
+// );
+// }
+
+
+
+//e.preventDefault()// предотвращает дэфолтное поведение браузера страница не обновлчяется
