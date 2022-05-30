@@ -15,15 +15,22 @@ const[posts, setPosts]= useState([
 
 ])
 
+const [title, setTitle] = useState('')
 
 
+const addNewPost=()=>{
+
+
+}
 
   return (
     <div className="App">
     <form>
-    <MyInput type = 'text' placeholder='Название поста'/>
+    <MyInput
+    value={title} //двухсторонее связывание value input с состоянием title
+    type = 'text' placeholder='Название поста'/>
     <MyInput type = 'text' placeholder = 'Описание поста'/>
-    <MyButton disabled>Создать кнопку</MyButton>
+    <MyButton onClick={addNewPost}>Создать пост </MyButton> 
     </form>
    <PostList posts={posts} title='Посты про JS'/> 
     </div>
@@ -40,6 +47,10 @@ export default App;
 
 
 
+
+
+
+//<MyButton onClick={addNewPost}>Создать пост </MyButton> //новые посты в массив добавлять
 
 /*const [posts2, setPosts2]= useState([
   {id: 1, title: 'Phyton', body: 'Descreption'},
