@@ -17,9 +17,8 @@ const[posts, setPosts]= useState([
 
 const [title, setTitle] = useState('')
 
-
-const addNewPost=()=>{
-
+const addNewPost=(e)=>{
+e.preventDefault()// предотвращает дэфолтное поведение браузера
 
 }
 
@@ -31,12 +30,12 @@ const addNewPost=()=>{
     onChange = {e=>setTitle(e.target.value)}//отлеживать когда пользователь что то вводит
     type = 'text' placeholder='Название поста'/>
     <MyInput type = 'text' placeholder = 'Описание поста'/>
-    <MyButton onClick={addNewPost}>Создать пост </MyButton> 
+    <MyButton type onClick={addNewPost}>Создать пост </MyButton> 
     </form>
    <PostList posts={posts} title='Посты про JS'/> 
     </div>
   );
-}
+
 
 
 export default App;
