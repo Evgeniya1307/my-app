@@ -1,6 +1,6 @@
 import React from "react";
 
-const PostForm = () => {
+const PostForm = ({create}) => {
   const [post, setPost] = useState({ title: "", body: "" }); // когда много постов объектов
 
   const addNewPost = (e) => {
@@ -9,6 +9,8 @@ const PostForm = () => {
     const newPost = {
         ...post, id:Date.now()// создала новый объект в него развернула состояние с формы...post добавила id 
     }
+
+    create(newPost)//деструктуризация пропсов
     setPost({ title: "", body: "" }); // обнуляем состояние всеё формы
   };
 
