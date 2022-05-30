@@ -5,6 +5,7 @@ import PostList from "./components/PostList";
 import './Styles/App.css';
 import { type } from "@testing-library/user-event/dist/type";
 import PostForm from "./components/PostForm";
+import MySelect from "./components/UI/select/MySelect";
 
 function App() {
 // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -30,10 +31,13 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
   <PostForm create ={createPost}/> {/*props create */}
   <hr style={{margin: '15px 0'}}/>
   <div> 
-   <select>
-   <option value='value'>'По названию</option>
-   <option value='value'>'По описанию'</option>
-   </select>
+  <MySelect 
+  defaultValue='Сортировка '
+  options={[
+    {value: 'title', name:'По названию'},// объект содержит 2поля это value в нашем случае с велью тайтол а второе с велью бади сортировка по заголовку и по телу и name сам текст который находится внутри опций
+  {value: 'body', name: 'По описанию'},
+  ]}// передать массив опций
+  />
    </div>
 
   
@@ -56,7 +60,10 @@ export default App;
 
 
 
-
+//<MySelect 
+//defaultValue='Сортировка '
+//options={[]}// передать массив опций
+ // передаю пропсы
 
 {/* условная отрисовка если посты не найдены чтобы отображалась какая то запись проверила что длинна массива не равна 0 */}
 // {posts.length !==0 
