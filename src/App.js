@@ -16,6 +16,9 @@ const[posts, setPosts]= useState([
 
 ])
 
+//реализую двухсторонне связывание для этого создаю новое состояние
+const[selectedSort, setSelectedSort]=useState('')
+
 
 const createPost=(newPost)=>{ // на входе будет ожидать (newPost) его буду передавать в компоненте postform
 setPosts(...posts, newPost)// изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
@@ -32,6 +35,8 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
   <hr style={{margin: '15px 0'}}/>
   <div> 
   <MySelect 
+  value={selectedSort}
+  onChange={sort=>setSelectedSort(sort)}//вызываю функцию setSelectedSort и передаю то что приходит из селекта т,е та опция что выбрал пользователь
   defaultValue='Сортировка '
   options={[
     {value: 'title', name:'По названию'},// объект содержит 2поля это value в нашем случае с велью тайтол а второе с велью бади сортировка по заголовку и по телу и name сам текст который находится внутри опций
