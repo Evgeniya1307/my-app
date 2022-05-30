@@ -19,14 +19,14 @@ const[posts, setPosts]= useState([
 
 
 const createPost=(newPost)=>{ // на входе будет ожидать (newPost) его буду передавать в компоненте postform
-setPosts()
+setPosts(...posts, newPost)// изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
 }
 
 
 
   return (
     <div className="App">
-    <PostForm create ={createPost}/>
+  <PostForm create ={createPost}/> {/*props create */}
    <PostList posts={posts} title='Посты про JS'/> 
     </div>
   );
