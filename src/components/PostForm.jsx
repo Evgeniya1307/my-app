@@ -1,4 +1,7 @@
 import React from "react";
+import { useState } from "react";
+import MyButton from "./UI/button/MyButton"
+import MyInput from "./UI/input/MyInput";
 
 const PostForm = ({create}) => {
   const [post, setPost] = useState({ title: "", body: "" }); // когда много постов объектов
