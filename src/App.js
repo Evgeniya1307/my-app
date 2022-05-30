@@ -27,7 +27,7 @@ const addNewPost=(e)=>{
     title,
     body
   }
-  console.log(newPost)
+setPosts([...posts,newPost])// добавить созданный объект в массив постов [...posts,newPost] добавляем старый массив и в конец новый 
 }
 
 
