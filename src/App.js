@@ -28,8 +28,11 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
   return (
     <div className="App">
   <PostForm create ={createPost}/> {/*props create */}
-   <PostList remove={removePost} posts={posts} title='Посты про JS'/> 
-    </div>
+   {posts.length !==0 
+ ?  <PostList remove={removePost} posts={posts} title='Посты про JS'/> 
+ : <h1 style={{textAlign:'center'}}>Посты не найдены!</h1>
+  }
+  </div>
   );
 }
 
@@ -38,6 +41,17 @@ export default App;
 
 
 
+
+
+
+
+
+
+{/* условная отрисовка если посты не найдены чтобы отображалась какая то запись проверила что длинна массива не равна 0 */}
+// {posts.length !==0 
+//   ?  <PostList remove={removePost} posts={posts} title='Посты про JS'/> 
+//   :<div> Посты не найдены!</div>
+//    }
 
 
 //const newPost = {
