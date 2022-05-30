@@ -28,6 +28,7 @@ const addNewPost=()=>{
     <form>
     <MyInput
     value={title} //двухсторонее связывание value input с состоянием title
+    onChange = {e=>setTitle(e.target.value)}//отлеживать когда пользователь что то вводит
     type = 'text' placeholder='Название поста'/>
     <MyInput type = 'text' placeholder = 'Описание поста'/>
     <MyButton onClick={addNewPost}>Создать пост </MyButton> 
