@@ -17,11 +17,12 @@ function App() {
     { id: 3, title: "Javascript 3", body: "xx" },
   ]);
 
-  //реализую двухсторонне связывание для этого создаю новое состояние
-  const [selectedSort, setSelectedSort] = useState("");
-  const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
+ //состояние для для объекта для сортировки и поисковая строка
+const[filter, setFilter]= useState({sort: '', query:''})
   
-  //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
+  
+ 
+ //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
  //лежит отсортированный массив
   const sortedPosts = useMemo(() => {
     console.log('Отработала эта функция')
@@ -107,3 +108,12 @@ export default App;
 // return [...posts].sort(...)
 //}, [selectedSort, posts]) 
 // если массив пустой то функция отработает единожды запомнит результат и больше вызванна не будет
+
+
+
+
+
+
+ //реализую двухсторонне связывание для этого создаю новое состояние
+  // const [selectedSort, setSelectedSort] = useState("");
+  // const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
