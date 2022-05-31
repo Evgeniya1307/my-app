@@ -19,7 +19,7 @@ const[posts, setPosts]= useState([
 
 //реализую двухсторонне связывание для этого создаю новое состояние
 const[selectedSort, setSelectedSort]=useState('')
-const[searchQuery, setsearchQuery]= useState()// состояние для  <MyInput placeholder='Поиск...'/>
+const[searchQuery, setsearchQuery]= useState('')// состояние для  <MyInput placeholder='Поиск...'/>
 
 
 
@@ -45,6 +45,8 @@ const sortPosts = (sort)=>{
   <hr style={{margin: '15px 0'}}/>
   <div> 
   <MyInput 
+  value={setsearchQuery}
+  onChange={e=> setsearchQuery(e.target.value)}//управляемый инпут
   placeholder='Поиск...'
   />
   <MySelect 
