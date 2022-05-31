@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Counter from "./components/Counter";
 import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
@@ -21,18 +21,21 @@ function App() {
   const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
   
   //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
-  function getSortedPosts(){
+ //лежит отсортированный массив
+  const sortedPosts = useMemo(() => {
+    console.log('Отработала эта функция')
     if(selectedSort){
       return[...posts].sort((a, b)=> a [selectedSort].localeCompare(b[selectedSort]))
     }
     return posts;
-  }
-  
-  
-  const sortedPosts = getSortedPosts// помещаю результат выполнения этой функции
+  }, [selectedSort, posts])
+
   
 
   // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
+const sortedAndSearchedPosts = useMemo(()=>{
+return sortedPosts.filter(post=>post.title.includes(searchQuery))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes(передаю поисковую строку)
+}, [searchQuery, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
 
   const createPost = (newPost) => {
     // на входе будет ожидать (newPost) его буду передавать в компоненте postform
@@ -72,9 +75,9 @@ function App() {
       {posts.length !== 0 ? (
         <PostList
           remove={removePost}
-          posts={sortedPosts}
+          posts={sortedAndSearchedPosts}
           title="Посты про JS"
-        /> // буду передавать отсортированный массив posts={sortedPosts}
+        /> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
       ) : (
         <h1 style={{ textAlign: "center" }}>Посты не найдены!</h1>
       )}
@@ -104,3 +107,17 @@ export default App;
 //   title,
 //   body
 // }
+
+
+//хук useMemo(()=>{  //первым параметром функция колбэк вторым массив 
+//зависимостпей  она работает производит вычесление
+// в данном случае массив запомингает результат 
+//этих вычислений и кэширует(мемонизация)и на каждую 
+//перерисовку компонента она не перещитывает 
+//заново она достаёт отсортированный массив из кэша но
+// каждый раз какая то зависимостей изменилась то 
+//функция вновь перещитывает и кэширует до тех пора 
+//пока вновь одна из зависимостей не изменится
+// return [...posts].sort(...)
+//}, [selectedSort, posts]) 
+// если массив пустой то функция отработает единожды запомнит результат и больше вызванна не будет
