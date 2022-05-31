@@ -5,8 +5,6 @@ import PostList from "./components/PostList";
 import "./Styles/App.css";
 import { type } from "@testing-library/user-event/dist/type";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/select/MySelect";
-import MyInput from "./components/UI/input/MyInput";
 import PostFilter from "./components/PostFilter";
 
 function App() {
@@ -17,7 +15,7 @@ function App() {
     { id: 3, title: "Javascript 3", body: "xx" },
   ]);
 
- //состояние для для объекта для сортировки и поисковая строка
+ //состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
 const[filter, setFilter]= useState({sort: '', query:''})
   
   
@@ -26,18 +24,18 @@ const[filter, setFilter]= useState({sort: '', query:''})
  //лежит отсортированный массив
   const sortedPosts = useMemo(() => {
     console.log('Отработала эта функция')
-    if(selectedSort){
-      return[...posts].sort((a, b)=> a [selectedSort].localeCompare(b[selectedSort]))
+    if(filter.sort){
+      return[...posts].sort((a, b)=> a [filter.sort].localeCompare(b[filter.sort]))
     }
     return posts;
-  }, [selectedSort, posts])
+  }, [filter.sort, posts])
 
   
 
   // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
 const sortedAndSearchedPosts = useMemo(()=>{
-return sortedPosts.filter(post=>post.title.toLowerCase().includes(searchQuery))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes(передаю поисковую строку)//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
-}, [searchQuery, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
+return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
+}, [filter.query, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
 
   const createPost = (newPost) => {
     // на входе будет ожидать (newPost) его буду передавать в компоненте postform
@@ -49,16 +47,13 @@ return sortedPosts.filter(post=>post.title.toLowerCase().includes(searchQuery))/
     setPosts(posts.filter((p) => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
   };
 
-  // после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
-  const sortPosts = (sort) => {
-    setSelectedSort(sort); // перезаписала состояние
-  };
+ 
 
   return (
     <div className="App">
       <PostForm create={createPost} /> {/*props create */}
       <hr style={{ margin: "15px 0" }} />
-      <PostFilter/>
+      <PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет 
       {sortedAndSearchedPosts.length 
         ? 
         <PostList
@@ -117,3 +112,11 @@ export default App;
  //реализую двухсторонне связывание для этого создаю новое состояние
   // const [selectedSort, setSelectedSort] = useState("");
   // const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
+
+
+
+
+   // после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
+   //const sortPosts = (sort) => {
+   // setSelectedSort(sort); // перезаписала состояние
+  //}
