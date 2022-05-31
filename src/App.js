@@ -53,16 +53,16 @@ return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))
     <div className="App">
       <PostForm create={createPost} /> {/*props create */}
       <hr style={{ margin: "15px 0" }} />
-      <PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет 
-      {sortedAndSearchedPosts.length 
-        ? 
+      <PostFilter 
+      filter={filter}
+       setFilter={setFilter}
+       /> 
+      
+      
         <PostList
           remove={removePost}
           posts={sortedAndSearchedPosts}
           title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
-      : 
-        <h1 style={{ textAlign: "center" }}>Посты не найдены!</h1>
-      }
     </div>
   );
 }
@@ -120,3 +120,9 @@ export default App;
    //const sortPosts = (sort) => {
    // setSelectedSort(sort); // перезаписала состояние
   //}
+
+
+
+  //<PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет 
+
+  //<PostList remove={removePost}posts={sortedAndSearchedPosts}title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
