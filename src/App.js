@@ -20,7 +20,9 @@ const[posts, setPosts]= useState([
 //реализую двухсторонне связывание для этого создаю новое состояние
 const[selectedSort, setSelectedSort]=useState('')
 const[searchQuery, setsearchQuery]= useState('')// состояние для  <MyInput placeholder='Поиск...'/>
+const sortedPosts=[...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))//передаю отсортированный массив sort () не возвращает новый отсортированный массив а муттирует тот массив к которому эта функция была применена развернём старый массив в новый массив и отсортирую этот массив )
 
+// для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
 
 
 const createPost=(newPost)=>{ // на входе будет ожидать (newPost) его буду передавать в компоненте postform
@@ -35,7 +37,7 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
 // после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
 const sortPosts = (sort)=>{
   setSelectedSort(sort)// перезаписала состояние
- setPosts([...posts].sort((a, b) => a[sort].localeCompare()))//передаю отсортированный массив sort () не возвращает новый отсортированный массив а муттирует тот массив к которому эта функция была применена развернём старый массив в новый массив и отсортирую этот массив )
+
 
 }
 
@@ -62,7 +64,7 @@ const sortPosts = (sort)=>{
 
   
   {posts.length !==0 
- ?  <PostList remove={removePost} posts={posts} title='Посты про JS'/> 
+ ?  <PostList remove={removePost} posts={sortedPosts} title='Посты про JS'/> // буду передавать отсортированный массив posts={sortedPosts}
  : <h1 style={{textAlign:'center'}}>
  Посты не найдены!
  </h1>
