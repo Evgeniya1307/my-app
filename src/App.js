@@ -6,18 +6,21 @@ import './Styles/App.css';
 import { type } from "@testing-library/user-event/dist/type";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
 // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
 const[posts, setPosts]= useState([
-  {id:1, title:'Javascript',body:'description'},
-{id:2, title:'Javascript 2',body:'description'},
-{id:3, title:'Javascript 3',body:'description'},
+  {id:1, title:'Ja',body:'bb'},
+{id:2, title:'va 2',body:'aa'},
+{id:3, title:'Javascript 3',body:'xx'},
 
 ])
 
 //реализую двухсторонне связывание для этого создаю новое состояние
 const[selectedSort, setSelectedSort]=useState('')
+const[searchQuery, setsearchQuery]= useState()// состояние для  <MyInput placeholder='Поиск...'/>
+
 
 
 const createPost=(newPost)=>{ // на входе будет ожидать (newPost) его буду передавать в компоненте postform
@@ -32,7 +35,7 @@ setPosts(posts.filter(p=>p.id !==post.id))// из массива постов н
 // после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
 const sortPosts = (sort)=>{
   setSelectedSort(sort)// перезаписала состояние
- setPosts([...posts].sort())//передаю отсортированный массив sort () не возвращает новый отсортированный массив а муттирует тот массив к которому эта функция была применена развернём старый массив в новый массив и отсортирую этот массив 
+ setPosts([...posts].sort((a, b) => a[sort].localeCompare()))//передаю отсортированный массив sort () не возвращает новый отсортированный массив а муттирует тот массив к которому эта функция была применена развернём старый массив в новый массив и отсортирую этот массив )
 
 }
 
@@ -41,6 +44,9 @@ const sortPosts = (sort)=>{
   <PostForm create ={createPost}/> {/*props create */}
   <hr style={{margin: '15px 0'}}/>
   <div> 
+  <MyInput 
+  placeholder='Поиск...'
+  />
   <MySelect 
   value={selectedSort}
   onChange={sortPosts}//вызываю функцию setSelectedSort и передаю то что приходит из селекта т,е та опция что выбрал пользователь
@@ -69,6 +75,9 @@ export default App;
 
 
 
+
+
+//<MyInput placeholder='Поиск...'/> механизм поиска в инпут вводим название поста и все исчезают и мы видим только тот который нужен 
 
 
 
