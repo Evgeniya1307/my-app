@@ -22,22 +22,6 @@ const[filter, setFilter]= useState({sort: '', query:''})
 //состояние отвечающее видимо модалка или нет
 const[modal, setModal]=useState(false)
 
-  
-
-
-
- //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
- //лежит отсортированный массив
-  const sortedPosts = useMemo(() => {
-    console.log('Отработала эта функция')
-    if(filter.sort){
-      return[...posts].sort((a, b)=> a [filter.sort].localeCompare(b[filter.sort]))
-    }
-    return posts;
-  }, [filter.sort, posts])
-
-  
-
   // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
 const sortedAndSearchedPosts = useMemo(()=>{
 return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
