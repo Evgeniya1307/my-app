@@ -6,78 +6,57 @@ import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
+import { usePosts } from "./components/hooks/usePosts";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
-  const [posts, setPosts] = useState([
-    { id: 1, title: "Ja", body: "bb" },
-    { id: 2, title: "va 2", body: "aa" },
-    { id: 3, title: "Javascript 3", body: "xx" },
-  ]);
+  const [posts, setPosts] = useState([]);
 
- //состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
-const[filter, setFilter]= useState({sort: '', query:''})
-  
+  //состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+  //состояние отвечающее видимо модалка или нет
+  const [modal, setModal] = useState(false);
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
 
-//состояние отвечающее видимо модалка или нет
-const[modal, setModal]=useState(false)
-
-  // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
-const sortedAndSearchedPosts = useMemo(()=>{
-return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
-}, [filter.query, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
-
-  
-const createPost = (newPost) => {
+  const createPost = (newPost) => {
     // на входе будет ожидать (newPost) его буду передавать в компоненте postform
     setPosts([...posts, newPost]); // изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
-  setModal(false)// скрывалось модалка засетила в состояние false
+    setModal(false); // скрывалось модалка засетила в состояние false
   };
+
+// функция отправляет запрос на сервер получать данные и помещать в состояние с постами
+function fetchPosts(){
+  const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+}
 
   //чтобы удалять пост получаем post из дочернего компонента
   const removePost = (post) => {
     setPosts(posts.filter(p => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
   };
 
- 
-
   return (
     <div className="App">
-    <MyButton style={{marginTop:30}} onClick={()=>setModal(true)}> 
-    Создать пользователя
-    </MyButton>
-<MyModal visible={modal}setVisible={setModal}> 
-<PostForm create={createPost} /> {/*props create */}
-</MyModal>
-<hr style={{ margin: "15px 0" }} />
-      <PostFilter 
-      filter={filter}
-       setFilter={setFilter}
-       /> 
-      
-      
-        <PostList
-          remove={removePost}
-          posts={sortedAndSearchedPosts}
-          title="Посты про JS"/> 
+      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
+        Создать пользователя
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost} /> {/*props create */}
+      </MyModal>
+      <hr style={{ margin: "15px 0" }} />
+      <PostFilter filter={filter} setFilter={setFilter} />
+
+      <PostList
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+        title="Посты про JS"
+      />
     </div>
   );
 }
 
 export default App;
 
-
-
-
-
-
-
 //MyButton style={{marginTop:30} чтобы кнопка не прилепала сверху
-
-
-
-
-
 
 //<MyInput placeholder='Поиск...'/> механизм поиска в инпут вводим название поста и все исчезают и мы видим только тот который нужен
 
@@ -100,39 +79,28 @@ export default App;
 //   body
 // }
 
-
-//хук useMemo(()=>{  //первым параметром функция колбэк вторым массив 
+//хук useMemo(()=>{  //первым параметром функция колбэк вторым массив
 //зависимостпей  она работает производит вычесление
-// в данном случае массив запомингает результат 
-//этих вычислений и кэширует(мемонизация)и на каждую 
-//перерисовку компонента она не перещитывает 
+// в данном случае массив запомингает результат
+//этих вычислений и кэширует(мемонизация)и на каждую
+//перерисовку компонента она не перещитывает
 //заново она достаёт отсортированный массив из кэша но
-// каждый раз какая то зависимостей изменилась то 
-//функция вновь перещитывает и кэширует до тех пора 
+// каждый раз какая то зависимостей изменилась то
+//функция вновь перещитывает и кэширует до тех пора
 //пока вновь одна из зависимостей не изменится
 // return [...posts].sort(...)
-//}, [selectedSort, posts]) 
+//}, [selectedSort, posts])
 // если массив пустой то функция отработает единожды запомнит результат и больше вызванна не будет
 
+//реализую двухсторонне связывание для этого создаю новое состояние
+// const [selectedSort, setSelectedSort] = useState("");
+// const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
 
+// после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
+//const sortPosts = (sort) => {
+// setSelectedSort(sort); // перезаписала состояние
+//}
 
+//<PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет
 
-
-
- //реализую двухсторонне связывание для этого создаю новое состояние
-  // const [selectedSort, setSelectedSort] = useState("");
-  // const [searchQuery, setsearchQuery] = useState(""); // состояние для  <MyInput placeholder='Поиск...'/>
-
-
-
-
-   // после того как пользователь выбрал сортировку алгоритм нужно массив отсортировать
-   //const sortPosts = (sort) => {
-   // setSelectedSort(sort); // перезаписала состояние
-  //}
-
-
-
-  //<PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет 
-
-  //<PostList remove={removePost}posts={sortedAndSearchedPosts}title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
+//<PostList remove={removePost}posts={sortedAndSearchedPosts}title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
