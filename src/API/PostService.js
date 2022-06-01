@@ -1,5 +1,5 @@
 
-
+import axios from "axios"
 
 export default class PostService {
     static async getAll(){ // статичная асинхронная функция будет возвращать список постов
@@ -12,3 +12,4 @@ console.log(e)
        
 }
 }
+

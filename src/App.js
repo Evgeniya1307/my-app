@@ -6,8 +6,7 @@ import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
-import { usePosts } from "./components/hooks/usePosts";
-import axios from "axios";
+import { usePosts } from "./hooks/usePosts";
 import PostService from "./API/PostService";
 
 function App() {
@@ -18,8 +17,10 @@ function App() {
   //состояние отвечающее видимо модалка или нет
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
-
+const[isPostsLoading, setIsPostLoading]=useState(false) // для ожидание крутилка
   
+
+
   useEffect(() => {
 fetchPosts()
   }, [filter])
@@ -34,8 +35,8 @@ fetchPosts()
 
 // функция отправляет запрос на сервер получать данные и помещать в состояние с постами
 async function fetchPosts(){
-  const response = await PostService.getAll()
-setPosts(response.data)// то что получили в теле ответа то что вернул сервер
+  const posts = await PostService.getAll() // вернёт список постов
+setPosts(posts)// то что получили в теле ответа то что вернул сервер
 }
 
   //чтобы удалять пост получаем post из дочернего компонента
