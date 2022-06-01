@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import Counter from "./components/Counter";
-import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
 import "./Styles/App.css";
 import { type } from "@testing-library/user-event/dist/type";
 import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/MyModal/MyModal";
+import MyButton from "./components/UI/button/MyButton";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -18,8 +18,14 @@ function App() {
  //состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
 const[filter, setFilter]= useState({sort: '', query:''})
   
+
+//состояние отвечающее видимо модалка или нет
+const[modal, setModal]=useState(false)
+
   
- 
+
+
+
  //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
  //лежит отсортированный массив
   const sortedPosts = useMemo(() => {
@@ -34,25 +40,32 @@ const[filter, setFilter]= useState({sort: '', query:''})
 
   // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
 const sortedAndSearchedPosts = useMemo(()=>{
-return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
+return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
 }, [filter.query, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
 
-  const createPost = (newPost) => {
+  
+const createPost = (newPost) => {
     // на входе будет ожидать (newPost) его буду передавать в компоненте postform
-    setPosts(...posts, newPost); // изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
+    setPosts([...posts, newPost]); // изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
+  setModal(false)// скрывалось модалка засетила в состояние false
   };
 
   //чтобы удалять пост получаем post из дочернего компонента
   const removePost = (post) => {
-    setPosts(posts.filter((p) => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
+    setPosts(posts.filter(p => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
   };
 
  
 
   return (
     <div className="App">
-      <PostForm create={createPost} /> {/*props create */}
-      <hr style={{ margin: "15px 0" }} />
+    <MyButton style={{marginTop:30}} onClick={()=>setModal(true)}> 
+    Создать пользователя
+    </MyButton>
+<MyModal visible={modal}setVisible={setModal}> 
+<PostForm create={createPost} /> {/*props create */}
+</MyModal>
+<hr style={{ margin: "15px 0" }} />
       <PostFilter 
       filter={filter}
        setFilter={setFilter}
@@ -62,12 +75,25 @@ return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))
         <PostList
           remove={removePost}
           posts={sortedAndSearchedPosts}
-          title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
+          title="Посты про JS"/> 
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+//MyButton style={{marginTop:30} чтобы кнопка не прилепала сверху
+
+
+
+
+
 
 //<MyInput placeholder='Поиск...'/> механизм поиска в инпут вводим название поста и все исчезают и мы видим только тот который нужен
 

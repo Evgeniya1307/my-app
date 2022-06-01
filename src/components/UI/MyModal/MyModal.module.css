@@ -1,0 +1,24 @@
+.myModal {
+    position: fixed;  /*позиционируется относительно окна просмотра, что означает, что он всегда остается на одном и том же месте, даже если страница прокручивается.  */
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: none; /* чтобы изначально модальное окно не видно*/
+background:rgba(0, 0, 0, 0.5) ;/*затемню */
+}
+
+/*стили для контентной части */
+.myModalContent {
+    padding: 25px; /*внутренний отступ*/
+    background: white; /*задний фон */
+    border-radius: 16px; /*закруглила края*/
+    min-width: 250px; /*минимальная ширина модального окна*/
+}
+
+/*будет менять значения */
+.myModal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
