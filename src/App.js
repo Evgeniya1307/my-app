@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import PostList from "./components/PostList";
 import "./Styles/App.css";
 import { type } from "@testing-library/user-event/dist/type";
@@ -7,17 +7,24 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import { usePosts } from "./components/hooks/usePosts";
+import axios from "axios";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
   const [posts, setPosts] = useState([]);
-
-  //состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
+//состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
   const [filter, setFilter] = useState({ sort: "", query: "" });
   //состояние отвечающее видимо модалка или нет
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
 
+  
+  useEffect(() => {
+fetchPosts()
+  }, [filter])
+  
+  
+  
   const createPost = (newPost) => {
     // на входе будет ожидать (newPost) его буду передавать в компоненте postform
     setPosts([...posts, newPost]); // изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
@@ -25,8 +32,9 @@ function App() {
   };
 
 // функция отправляет запрос на сервер получать данные и помещать в состояние с постами
-function fetchPosts(){
+async function fetchPosts(){
   const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+setPosts(response.data)// то что получили в теле ответа то что вернул сервер
 }
 
   //чтобы удалять пост получаем post из дочернего компонента
@@ -36,6 +44,7 @@ function fetchPosts(){
 
   return (
     <div className="App">
+    <button onClick={fetchPosts}>Get posts</button>
       <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
         Создать пользователя
       </MyButton>

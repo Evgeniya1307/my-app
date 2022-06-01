@@ -7,11 +7,11 @@ export const useSortedPosts = (posts, sort)=> {
  //лежит отсортированный массив
  const sortedPosts = useMemo(() => {
     console.log('Отработала эта функция')
-    if(filter.sort){
+    if(sort){
       return[...posts].sort((a, b)=> a [sort].localeCompare(b[sort]))
     }
     return posts;
-  }, [filter.sort, posts])
+  }, [sort, posts])
 return sortedPosts
 
 }
@@ -29,3 +29,7 @@ return sortedAndSearchedPosts
 export default usePosts
 
 // кастомные пользовательские хуки-это хуки  которые внутри себя используют стандартные реакт хуки такие как useMemo useState и т,д
+
+
+// в кажой компоненте есть жизненый цикл 3 стадии монтирование обновление и рамонтирование
+//  useEffect(callback, deps) примает колбэк и массив зависимостей когда массив пустой отработает единожды в момент монтирования компонента в нашем случае нужно подгрузить список постов если колбэк возвращает каакую то функцию то будет отработает в момент когда будет компонент уничтожаться 
