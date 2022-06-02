@@ -8,6 +8,8 @@ import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import { usePosts } from "./hooks/usePosts";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
+import { useFetching } from "./hooks/useFetching";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -16,14 +18,21 @@ function App() {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   //состояние отвечающее видимо модалка или нет
   const [modal, setModal] = useState(false);
+  //состояние, буду помещать общее количество постов
+  const [totalCount, setTotalCount]=useState(0)// 0-ещё не знаю сколько постов
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
-const[isPostsLoading, setIsPostLoading]=useState(false) // для ожидание крутилка
+ //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
+  const [fetchPosts,isPostsLoading, postError ]= useFetching(async()=>{
+  const response = await PostService.getAll() // вернёт список постов
+  setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
+ setTotalCount(response.headers['x-total-count'])// как получила ответ обращаюсь к хедарам и оттуда достаю хедар и тоталкаунт
+})
   
 
 
   useEffect(() => {
 fetchPosts()
-  }, [filter])
+  }, [])
   
   
   
@@ -33,11 +42,7 @@ fetchPosts()
     setModal(false); // скрывалось модалка засетила в состояние false
   };
 
-// функция отправляет запрос на сервер получать данные и помещать в состояние с постами
-async function fetchPosts(){
-  const posts = await PostService.getAll() // вернёт список постов
-setPosts(posts)// то что получили в теле ответа то что вернул сервер
-}
+
 
   //чтобы удалять пост получаем post из дочернего компонента
   const removePost = (post) => {
@@ -54,13 +59,21 @@ setPosts(posts)// то что получили в теле ответа то ч�
         <PostForm create={createPost} /> {/*props create */}
       </MyModal>
       <hr style={{ margin: "15px 0" }} />
-      <PostFilter filter={filter} setFilter={setFilter} />
+      <PostFilter filter={filter} 
+      setFilter={setFilter} />
+{postError && 
+<h1>Произошла ошибка ${postError}</h1> // на отработку ошибок если в постэррор чтото находится то покажу заголовоки сообщение об ошибке <h1></h1> ,
+}
+      {isPostsLoading
+? <div style={{display:'flex', justifyContent: 'center', marginTop: 50}}><Loader/> </div>   //если эта переменная равна true то будет крутёлка
+:  <PostList
+remove={removePost}
+posts={sortedAndSearchedPosts}
+title="Посты про JS"
+/> // если нет то список постов показать 
+}
 
-      <PostList
-        remove={removePost}
-        posts={sortedAndSearchedPosts}
-        title="Посты про JS"
-      />
+     
     </div>
   );
 }
@@ -115,3 +128,19 @@ export default App;
 //<PostFilter filter={filter} setFilter={setFilter}/> // функцию которая это состояние изменяет
 
 //<PostList remove={removePost}posts={sortedAndSearchedPosts}title="Посты про JS"/> // буду передавать отсортированный и отфильтрованный массив будет работать и поиск и сотировка
+// marginTop: 50 оступ сверху
+
+
+
+
+
+// функция отправляет запрос на сервер получать данные и помещать в состояние с постами
+// async function fetchPosts(){
+ // const posts = await PostService.getAll() // вернёт список постов
+ // setPosts(posts)// то что получили в теле ответа то что вернул сервер
+//   setIsPostLoading(true)// перед отправкой на сервер
+//    setTimeout(async()=>{
+//      setIsPostLoading(false)//после оканчания запроса
+//    }, 1000) // будет показывать идёт загрузка 1 сек
+  
+//  }
