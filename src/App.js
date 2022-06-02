@@ -31,7 +31,7 @@ const[page, setPage]=useState(1)
   const response = await PostService.getAll(limit, page) // вернёт список постов
   setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
  const totalCount = response.headers['x-total-count']// из хедара достаю общее ко-во постов
-  setTotalPages(getPageCount())// как получила ответ обращаюсь к хедарам и оттуда достаю хедар и тоталкаунт
+  setTotalPages(getPageCount(totalCount, limit))// первый параметр количество вторым лимит
 })
   
 
