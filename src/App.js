@@ -10,6 +10,7 @@ import { usePosts } from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import { useFetching } from "./hooks/useFetching";
+import { getPageCount } from "./API/utils/pages";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -19,7 +20,7 @@ function App() {
   //состояние отвечающее видимо модалка или нет
   const [modal, setModal] = useState(false);
   //состояние, буду помещать общее количество постов
-  const [totalCount, setTotalCount]=useState(0)// 0-ещё не знаю сколько постов
+  const [totalPages, setTotalPages]=useState(0)// 0-ещё не знаю сколько постов
  // для лимита
 const [limit, setLimit]=useState(10)
 //состояние где хранить номер текущей страницы
@@ -29,7 +30,8 @@ const[page, setPage]=useState(1)
   const [fetchPosts,isPostsLoading, postError ]= useFetching(async()=>{
   const response = await PostService.getAll(limit, page) // вернёт список постов
   setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
- setTotalCount(response.headers['x-total-count'])// как получила ответ обращаюсь к хедарам и оттуда достаю хедар и тоталкаунт
+ const totalCount = response.headers['x-total-count']// из хедара достаю общее ко-во постов
+  setTotalPages(getPageCount())// как получила ответ обращаюсь к хедарам и оттуда достаю хедар и тоталкаунт
 })
   
 
