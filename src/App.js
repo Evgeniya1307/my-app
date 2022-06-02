@@ -10,7 +10,7 @@ import { usePosts } from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import { useFetching } from "./hooks/useFetching";
-import { getPageCount } from "./API/utils/pages";
+import { getPageCount, getPagesArray } from "./API/utils/pages";
 
 function App() {
   // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
@@ -27,12 +27,9 @@ const [limit, setLimit]=useState(10)
 const[page, setPage]=useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
  
-  // формирую массив значения от 1до 10 и на основание массива сделать кнопку при нажатии будет меняться страница
-let pagesArray =[]
-  for(let i =0; i<totalPages; i++){
-pagesArray.push(i+1);
-}
- 
+  // вызываю фун-ию передаю значение
+let pagesArray = getPagesArray(totalPages)
+
  
  
   //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
@@ -47,7 +44,7 @@ pagesArray.push(i+1);
 
   useEffect(() => {
 fetchPosts()
-  }, [])
+  }, [page])
   
   
   
@@ -64,9 +61,13 @@ fetchPosts()
     setPosts(posts.filter(p => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
   };
 
+//функция изменяющая номер страницы и подгружать новые данные
+const changePage= (page)=> {
+  setPage(page)// изменение состояния
+}
+
   return (
     <div className="App">
-    <button onClick={fetchPosts}>Get posts</button>
       <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
         Создать пользователя
       </MyButton>
@@ -74,26 +75,70 @@ fetchPosts()
         <PostForm create={createPost} /> {/*props create */}
       </MyModal>
       <hr style={{ margin: "15px 0" }} />
-      <PostFilter filter={filter} 
+      <PostFilter 
+        filter={filter} 
       setFilter={setFilter} />
 {postError && 
 <h1>Произошла ошибка ${postError}</h1> // на отработку ошибок если в постэррор чтото находится то покажу заголовоки сообщение об ошибке <h1></h1> ,
 }
       {isPostsLoading
 ? <div style={{display:'flex', justifyContent: 'center', marginTop: 50}}><Loader/> </div>   //если эта переменная равна true то будет крутёлка
-:  <PostList
-remove={removePost}
-posts={sortedAndSearchedPosts}
-title="Посты про JS"
-/> // если нет то список постов показать 
-}
+:  <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Посты про JS"/> // если нет то список постов показать 
+}  
+<div className="page__wrapper">
+{pagesArray.map(p => 
+  <span
+  onClick={()=>changePage(p)}
+  key={p} className={page===p ? 'page page__current' : 'page'}>
+  {p}</span>// имеем массив 1-10 и создаю кнопки с номерами страниц с помощью map итерируюсь для каждого элемента создаю кнопку и внутрь помещаю номер страницы   
+  )}
+</div>
 
-     
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//fetchPosts()// внутри себя использует состояние лимит и страницы
+
+// <button onClick={fetchPosts}>Get posts</button>  
 
 //MyButton style={{marginTop:30} чтобы кнопка не прилепала сверху
 
@@ -104,13 +149,9 @@ export default App;
 //options={[]}// передать массив опций
 // передаю пропсы
 
-{
-  /* условная отрисовка если посты не найдены чтобы отображалась какая то запись проверила что длинна массива не равна 0 */
-}
-// {posts.length !==0
-//   ?  <PostList remove={removePost} posts={posts} title='Посты про JS'/>
-//   :<div> Посты не найдены!</div>
-//    }
+ //условная отрисовка если посты не найдены чтобы отображалась какая то запись проверила что длинна массива не равна 0 */
+
+
 
 //const newPost = {
 //   id:Date.now(),// получим айдишник из текущей даты ниже сокращённый пример
