@@ -20,10 +20,14 @@ function App() {
   const [modal, setModal] = useState(false);
   //состояние, буду помещать общее количество постов
   const [totalCount, setTotalCount]=useState(0)// 0-ещё не знаю сколько постов
+ // для лимита
+const [limit, setLimit]=useState(10)
+//состояние где хранить номер текущей страницы
+const[page, setPage]=useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
  //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
   const [fetchPosts,isPostsLoading, postError ]= useFetching(async()=>{
-  const response = await PostService.getAll() // вернёт список постов
+  const response = await PostService.getAll(limit, page) // вернёт список постов
   setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
  setTotalCount(response.headers['x-total-count'])// как получила ответ обращаюсь к хедарам и оттуда достаю хедар и тоталкаунт
 })
