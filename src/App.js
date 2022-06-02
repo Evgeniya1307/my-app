@@ -26,7 +26,16 @@ const [limit, setLimit]=useState(10)
 //состояние где хранить номер текущей страницы
 const[page, setPage]=useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
- //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
+ 
+  // формирую массив значения от 1до 10 и на основание массива сделать кнопку при нажатии будет меняться страница
+let pagesArray =[]
+  for(let i =0; i<totalPages; i++){
+pagesArray.push(i+1);
+}
+ 
+ 
+ 
+  //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
   const [fetchPosts,isPostsLoading, postError ]= useFetching(async()=>{
   const response = await PostService.getAll(limit, page) // вернёт список постов
   setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
