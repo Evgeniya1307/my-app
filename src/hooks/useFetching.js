@@ -6,11 +6,12 @@ const [isLoading, setIsLoading] =  useState(false)
 const [error, setError]=  useState('')
 
 // на случай если ошибка произошла буду сюда её помещать
-const fetching =async ()=> {
+const fetching =async (...args)=> {
     try{
 setIsLoading(true)// изменяю состояние чтобы появилась крутилка
+await callback(...args) // вызываю коллбэк который приняла аргументом
 }catch(e){
-await callback() // вызываю коллбэк который приняла аргументом
+
 // обрабатываю случай если произошла ошибка
 setError(e.message)
 }finally{

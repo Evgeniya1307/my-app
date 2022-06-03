@@ -1,102 +1,26 @@
-import { useState, useMemo, useEffect } from "react";
-import PostList from "./components/PostList";
-import "./Styles/App.css";
-import { type } from "@testing-library/user-event/dist/type";
-import PostForm from "./components/PostForm";
-import PostFilter from "./components/PostFilter";
-import MyModal from "./components/UI/MyModal/MyModal";
-import MyButton from "./components/UI/button/MyButton";
-import { usePosts } from "./hooks/usePosts";
-import PostService from "./API/PostService";
-import Loader from "./components/UI/Loader/Loader";
-import { useFetching } from "./hooks/useFetching";
-import { getPageCount, getPagesArray } from "./API/utils/pages";
-
-function App() {
-  // если много нужно отобразить постов то через массив создаю состояние конректно массивов постов
-  const [posts, setPosts] = useState([]);
-//состояние для для объекта для сортировки и поисковая строка за логику сортировку отчечает postfilter
-  const [filter, setFilter] = useState({ sort: "", query: "" });
-  //состояние отвечающее видимо модалка или нет
-  const [modal, setModal] = useState(false);
-  //состояние, буду помещать общее количество постов
-  const [totalPages, setTotalPages]=useState(0)// 0-ещё не знаю сколько постов
- // для лимита
-const [limit, setLimit]=useState(10)
-//состояние где хранить номер текущей страницы
-const[page, setPage]=useState(1)
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // сортирует и фильтрует
- 
-  // вызываю фун-ию передаю значение
-let pagesArray = getPagesArray(totalPages)
-
- 
- 
-  //хук который предоставляет обработку индекации загрузки и обработку ошибки какого то запроса на получение данных
-  const [fetchPosts,isPostsLoading, postError ]= useFetching(async()=>{
-  const response = await PostService.getAll(limit, page) // вернёт список постов
-  setPosts(response.data)// то что получили в теле ответа то что вернул сервер // для ожидание крутилка
- const totalCount = response.headers['x-total-count']// из хедара достаю общее ко-во постов
-  setTotalPages(getPageCount(totalCount, limit))// первый параметр количество вторым лимит
-})
-  
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './Styles/App.css';
+import About from "./pages/About";
+import Posts from "./pages/Posts";
 
 
-  useEffect(() => {
-fetchPosts()
-  }, [page])
-  
-  
-  
-  const createPost = (newPost) => {
-    // на входе будет ожидать (newPost) его буду передавать в компоненте postform
-    setPosts([...posts, newPost]); // изменяю состояние разворачиваю старый массив и в конец добавляю новый пост
-    setModal(false); // скрывалось модалка засетила в состояние false
-  };
+function App(){
+return (
+<BrowserRouter>
+<div className="navbar">
 
-
-
-  //чтобы удалять пост получаем post из дочернего компонента
-  const removePost = (post) => {
-    setPosts(posts.filter(p => p.id !== post.id)); // из массива постов необходимо удалить тот пост который передали аргументом, фильт возвращает новый массив отфлиртованый по условию сдесь проверили id если  айдишник какого то элемента из массива  равен тому айдишнику который передали постом то тогда этот элемент удаляем
-  };
-
-//функция изменяющая номер страницы и подгружать новые данные
-const changePage= (page)=> {
-  setPage(page)// изменение состояния
-}
-
-  return (
-    <div className="App">
-      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
-        Создать пользователя
-      </MyButton>
-      <MyModal visible={modal} setVisible={setModal}>
-        <PostForm create={createPost} /> {/*props create */}
-      </MyModal>
-      <hr style={{ margin: "15px 0" }} />
-      <PostFilter 
-        filter={filter} 
-      setFilter={setFilter} />
-{postError && 
-<h1>Произошла ошибка ${postError}</h1> // на отработку ошибок если в постэррор чтото находится то покажу заголовоки сообщение об ошибке <h1></h1> ,
-}
-      {isPostsLoading
-? <div style={{display:'flex', justifyContent: 'center', marginTop: 50}}><Loader/> </div>   //если эта переменная равна true то будет крутёлка
-:  <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Посты про JS"/> // если нет то список постов показать 
-}  
-<div className="page__wrapper">
-{pagesArray.map(p => 
-  <span
-  onClick={()=>changePage(p)}
-  key={p} className={page===p ? 'page page__current' : 'page'}>
-  {p}</span>// имеем массив 1-10 и создаю кнопки с номерами страниц с помощью map итерируюсь для каждого элемента создаю кнопку и внутрь помещаю номер страницы   
-  )}
 </div>
+<Routes>
+<Route path="/about"  element={<About />} />
+<Route path="/posts"  element={<Posts />} />
+</Routes>
+</BrowserRouter>
+)
 
-    </div>
-  );
 }
+
+
 
 export default App;
 
@@ -110,6 +34,15 @@ export default App;
 
 
 
+//const AppRouter = () => {
+//   return (
+//     <Routes>
+//         <Route path="/about"  element={<About />} />
+//         <Route path="/posts"  element={<Posts />} />
+//         <Route path="*"       element={<Error />} />
+//     </Routes>
+// );
+// };
 
 
 
@@ -135,6 +68,16 @@ export default App;
 
 
 
+
+
+
+
+
+
+
+
+
+//<Pagination page={page} changePage={changePage} totalPages={totalPages}/> // передаю пропсы page-номер страницы changepage-функция изменяющая и totalpages общее количество страниц
 
 //fetchPosts()// внутри себя использует состояние лимит и страницы
 
