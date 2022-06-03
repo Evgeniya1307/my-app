@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import './Styles/App.css';
 import About from "./pages/About";
 import Posts from "./pages/Posts";
+import Navbar from "./components/UI/Navbar/Navbar";
 
 
 function App(){
 return (
 <BrowserRouter>
-<div className="navbar">
-
-</div>
+<Navbar/>
 <Routes>
 <Route path="/about"  element={<About />} />
 <Route path="/posts"  element={<Posts />} />
+<Route path="*"       element={<Error />} />
+
 </Routes>
 </BrowserRouter>
 )
 
 }
+
 
 
 
