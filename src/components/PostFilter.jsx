@@ -8,7 +8,7 @@ return(
     <div>
         <MyInput
           value={filter.query} // value для импута получаю из   поля из объекта filter
-          onChange={(e) => setFilter({...filter, query:e.target.value})} //управляемый инпут ,,,возвращаю все поля из этого объекта но заменяю нужное в случае инпута заменяю query
+          onChange={e => setFilter({...filter, query:e.target.value})} //управляемый инпут ,,,возвращаю все поля из этого объекта но заменяю нужное в случае инпута заменяю query
           placeholder="Поиск..."
         />
         <MySelect

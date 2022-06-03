@@ -1,0 +1,31 @@
+import React, {useContext} from "react";
+import MyButton from "../components/UI/button/MyButton";
+import MyInput from "../components/UI/input/MyInput";
+
+
+const Login = () => {
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const login = (event) => {
+      event.preventDefault();
+      setIsAuth(true);
+      localStorage.setItem('auth', 'true')
+    };
+  
+    return (
+      <div>
+        <h1>Страница для логина</h1>
+        <form onSubmit={login}>
+          <MyInput type="text" placeholder="Введите логин" />
+          <MyInput type="password" placeholder="Введите пароль" />
+          <MyButton>Войти</MyButton>
+        </form>
+      </div>
+    );
+  };
+  
+  export default Login;
+
+
+
+
+  //useContext с помощью него могу создать некое глобальное хранилище и из любого компонента обращаться к нему избегая передачи от родителя к ребёнку 
