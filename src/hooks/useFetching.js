@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const useFetching=(callback)=> { // callback некоторый запрос перед которым крутилку показать и после выполнения скрыть   
+ const useFetching=(callback)=> { // callback некоторый запрос перед которым крутилку показать и после выполнения скрыть   
 const [isLoading, setIsLoading] =  useState(false)
 // обработка ошибок базовый keys 
 const [error, setError]=  useState('')
@@ -20,3 +20,5 @@ setIsLoading(false)
 }
 return[fetching, isLoading, error]// возвращаю fetching -чтобы в нужном месте вызвать её , состояние isLoading, и ошибку 
 }
+
+export default useFetching
