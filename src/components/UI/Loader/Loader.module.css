@@ -3,15 +3,15 @@ width: 100px;
 height: 100px;
 border-radius: 50%;
 border: 3px dashed teal;
-animation: rotate 1s infinite linear ; /*свойство анимации название кадров длительность  функция анимации линейная*/
+animation: rotate 1s infinite linear; /*свойство анимации название кадров длительность  функция анимации линейная*/
 }
 
 /*ключевые кадры */
-@keyframes rotate{
+@keyframes rotate {
     from  {/*начало анимации */
-transform: rotate(0deg) scale(1); /*rotate вращать  scale(1) анимация идет на увеличение */
+        transform: rotate(0deg) scale(1); /*rotate вращать  scale(1) анимация идет на увеличение */
     } 
     to {  /*конец анимации */
-    transform: rotate(360deg) scale(1.4);
+        transform: rotate(360deg) scale(1.4);
     }
     }

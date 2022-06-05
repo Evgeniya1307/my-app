@@ -21,8 +21,10 @@ export const usePosts= (posts, sort, query)=>{
    const sortedPosts= useSortedPosts(posts,sort ) // получить массив отсортированных постов
 // для поиска нужна фильтрация чтобы удалять некоторые элементы массива но если с массива удалить вернуть их нельзя
 const sortedAndSearchedPosts = useMemo(()=>{
-    return sortedPosts.filter(post=>post.title.toLowerCase().includes(query.toLowerCase()))// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
-    }, [query, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
+    return sortedPosts.filter((post)=>
+    post.title.toLocaleLowerCase().includes(query)// по поисковой строке необходимо отфильтровать этот массив передаю колбэк обращаюсь к названию поста поле title и вызываю у него includes()//toLowerCase() поиск чувствителен к регистру вызвали функцию для названия поста и поисковой строки
+    )  
+  }, [query, sortedPosts])// будет попадать в массив поисковая строка и отсортированный массив
 return sortedAndSearchedPosts
 }
 

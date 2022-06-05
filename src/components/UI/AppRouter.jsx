@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Route, Routes,  Navigate,  } from 'react-router-dom'
 import Loader from './Loader/Loader';
-import { AuthContext } from "../context";
-import { privateRoutes, publicRoutes } from "../../router";
+import { AuthContext } from '../../context';
+import { privateRoutes, publicRoutes } from '../../router/router';
 
 const AppRouter = () => {
   const { isAuth , isLoading} = useContext(AuthContext);// хранить инфу авторизован или нет
