@@ -6,7 +6,6 @@ export const useSortedPosts = (posts, sort)=> {
  //создаю функцию проверяю если selectedSort если там не пустая строка то вернуть отсортирован,массив ,иначе обычный массив постов 
  //лежит отсортированный массив
  const sortedPosts = useMemo(() => {
-    console.log('Отработала эта функция')
     if(sort){
       return[...posts].sort((a, b)=> a [sort].localeCompare(b[sort]))
     }

@@ -7,7 +7,7 @@ function increment(){
     setCount(count +1)
 }
 
-function decrement(){
+function dicrement(){
     setCount(count-1)
 }
 
@@ -15,7 +15,7 @@ function decrement(){
          <div>
          <h1>{count}</h1>
          <button onClick={increment}>increment</button>
-         <button onClick={decrement}>decrement</button>
+         <button onClick={dicrement}>decrement</button>
     </div>
     )   
    
