@@ -1,23 +1,24 @@
-import React from 'react'
+import React,{useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import PostService from '../API/PostService'
-import  {useFetching}  from '../hooks/useFetching'
-import { useState, useEffect } from 'react'
- import Loader from '../components/UI/Loader/Loader'
+import useFetching from '../hooks/useFetching'
+import Loader from '../components/UI/Loader/Loader'
 
 
 const PostIdPage = () => {
     const params = useParams()
   const [post, setPost]= useState({})// вернёт пост по id
   const [comments, setComments] = useState([]); 
+  //Для отправки запросов -> хук возвращает массив где первый элемент это некотороя функция,второй элемент это индикатор загрузки , третий error
+  //Параметром этот хук принимает callback который будет возвращен ввиде обёртки первым элементом этого массива
   
   
   
   //для получения постов
-  const [fethPostById, isLoading, error]=useFetching(async(id)=> {
-    const response = await PostService.getCommentsByPostId(id)
-  setComments(response.data);//поместила состояние в поле data
-  })
+  const [fetchPostById, isLoading, error] = useFetching(async (id) => {
+    const response = await PostService.getById(id);
+    setPost(response.data);//поместила состояние в поле data
+  });
   
   //функция для получения комментариев 
   const [fetchComments, isComLoading, comError] = useFetching(async (id) => {
@@ -26,39 +27,38 @@ const PostIdPage = () => {
   });
 
   useEffect(() => {
-    fethPostById(params.id);
+    fetchPostById(params.id);
     fetchComments(params.id);
   }, []);
   
   
   return (
     <div>
-      <h1>Вы открыли страницу поста с ID = {params.id}</h1>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          {post.id}. {post.title}
-        </div>
-      )}
-      <h1>Комментарии</h1>
-      {isComLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          {comments.map((comm) => (
-            <div key={comm.id} style={{ marginTop: 15 }}>
-              <h5>
-                {comm.email}
-                <div>{comm.body}</div>
-              </h5>
-            </div>
-          ))}
-        </div>
-      )}
-     
+    <h1>Вы открыли страницу поста с ID = {params.id}</h1>
+    {isLoading ? (
+      <Loader />
+    ) : (
+      <div>
+        {post.id}. {post.title}
       </div>
-  )
-}
+    )}
+    <h1>Комментарии</h1>
+    {isComLoading ? (
+      <Loader />
+    ) : (
+      <div>
+        {comments.map((comm) => (
+          <div key={comm.id} style={{ marginTop: 15 }}>
+            <h5>
+              {comm.email}
+              <div>{comm.body}</div>
+            </h5>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+);
+};
 
 export default PostIdPage
