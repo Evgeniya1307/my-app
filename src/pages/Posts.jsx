@@ -10,8 +10,8 @@ import MyButton from "../components/UI/button/MyButton";
 import MyModal from '../components/UI/MyModal/MyModal'
 import Pagination from '../components/UI/pagination/Pagination'
 import {getPageCount} from '../utils/pages'
-
-
+import MySelect from "../components/UI/select/MySelect";
+import {useObserver} from '../hooks/useObserver'
 
 
 
@@ -103,7 +103,7 @@ const changePage= (page)=> {
       )}
       <PostList
       remove={removePost}
-      posts={sortedAndSearchedPost}
+      posts={sortedAndSearchedPosts}
       title="Посты про JavaScript"
     />
  
