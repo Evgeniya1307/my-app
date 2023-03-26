@@ -5,7 +5,7 @@ const [isLoading, setIsLoading] =  useState(false)
 // обработка ошибок базовый keys 
 const [error, setError]=  useState('')
 
-// на случай если ошибка произошла буду сюда её помещать
+// in case an error occurs
 const fetching =async (...args)=> {
     try{
 setIsLoading(true)// изменяю состояние чтобы появилась крутилка
