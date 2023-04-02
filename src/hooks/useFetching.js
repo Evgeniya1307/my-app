@@ -12,7 +12,7 @@ setIsLoading(true)// изменяю состояние чтобы появила
 await callback(...args) // I call the callback that took the argument
 }catch(e){
 
-// обрабатываю случай если произошла ошибка
+// handle the case if an error occurs
 setError(e.message)
 }finally{
 setIsLoading(false)
