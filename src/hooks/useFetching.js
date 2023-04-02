@@ -9,7 +9,7 @@ const [error, setError]=  useState('')
 const fetching =async (...args)=> {
     try{
 setIsLoading(true)// изменяю состояние чтобы появилась крутилка
-await callback(...args) // вызываю коллбэк который приняла аргументом
+await callback(...args) // I call the callback that took the argument
 }catch(e){
 
 // обрабатываю случай если произошла ошибка
