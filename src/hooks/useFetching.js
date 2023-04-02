@@ -18,7 +18,7 @@ setError(e.message)
 setIsLoading(false)
 }
 }
-return[fetching, isLoading, error]// возвращаю fetching -чтобы в нужном месте вызвать её , состояние isLoading, и ошибку 
+return[fetching, isLoading, error]// I return fetching - to call it in the right place, the isLoading state, and an error
 }
 
 export default useFetching
